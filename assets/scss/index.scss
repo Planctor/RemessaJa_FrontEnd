@@ -1,0 +1,829 @@
+//imports
+@import "_cores.scss";
+@import "_fonte.scss";
+@import "_responsivo.scss";
+
+//mixing
+@mixin flexbox($vertical: center, $horizontal: center) {
+  display: flex;
+  align-items: $vertical;
+  justify-content: $horizontal;
+}
+
+@mixin contraste($c: none) {
+  &:hover {
+    color: $c;
+    transition: 0.2s ease-in-out;
+  }
+}
+
+@mixin padding($top: 0, $left: 0, $bot: 0, $rigth: 0) {
+  padding: $top $left $bot $rigth;
+}
+
+@mixin titulo($centro: none) {
+  font-size: 36px;
+  line-height: 65px;
+  letter-spacing: 0.03em;
+  color: $contraste;
+  font-weight: $titulo;
+  position: relative;
+  &::after {
+    content: "";
+    background: $contraste;
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    height: 1px;
+    width: 178px;
+    transform: translateX($centro);
+  }
+  @include notebook {
+    font-size: 28px;
+  }
+  @include tablet {
+    font-size: 26px;
+    line-height: 55px;
+  }
+
+  @include mobile {
+    font-size: 22px;
+    line-height: 35px;
+    &::after {
+      display: none;
+    }
+  }
+}
+
+//css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  body {
+    overflow-x: hidden;
+    list-style: none;
+    font-family: $fonte;
+    background: $background;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 10% 5fr 4fr 10%;
+    grid-template-areas:
+      "nav nav nav nav"
+      ". header header ."
+      ". como como ."
+      ". por por ."
+      ". serv serv ."
+      ". footer footer ."
+      ". dir dir .";
+    @include notebook {
+      grid-template-columns: max(20px) auto max(20px);
+      grid-template-areas:
+        "nav nav nav"
+        ". header ."
+        ". como ."
+        ". por ."
+        ". serv ."
+        ". footer ."
+        ". dir .";
+    }
+    @include tablet {
+      grid-template-columns: max(30px) auto max(30px);
+      grid-template-areas:
+        "nav nav nav"
+        ". header ."
+        ". como ."
+        ". por ."
+        ". serv ."
+        ". footer ."
+        ". dir .";
+    }
+
+    @include mobile {
+      grid-template-columns: min(5px) auto min(5px);
+      grid-template-areas:
+        ". nav ."
+        ". header ."
+        ". como ."
+        ". por ."
+        ". serv ."
+        ". footer ."
+        ". dir .";
+    }
+    nav {
+      grid-area: nav;
+      padding: 1.2em 0;
+      background-color: $neutra;
+      box-shadow: 0px 13px 25px 8px rgba(0, 0, 0, 0.1);
+      display: block;
+      @include tablet {
+        box-shadow: none;
+        padding: 1.2em 0;
+        width: 100%;
+      }
+      .container {
+        margin: 0 10%;
+        @include notebook {
+          margin: 0 10px;
+        }
+        @include tablet {
+          @include flexbox($vertical: none, $horizontal: space-between);
+        }
+        @include flexbox($vertical: none, $horizontal: space-between);
+        .logo {
+          cursor: pointer;
+          color: $primaria;
+          z-index: 100000;
+        }
+        [data-menu="conteudo"] {
+          @include tablet {
+            z-index: 100000;
+            display: flex;
+            position: absolute;
+            right: 65px;
+          }
+          display: none;
+          .conteudo {
+            background: $primaria;
+            width: 50px;
+            height: 8px;
+            border-radius: 40px;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            position: absolute;
+            cursor: pointer;
+            margin: 10px 20px 0 0;
+          }
+          .conteudo:nth-child(1) {
+            -webkit-transform: translate3d(0, 10px, 0);
+            transform: translate3d(0, 10px, 0);
+          }
+          .conteudo:nth-child(3) {
+            -webkit-transform: translate3d(0, -10px, 0);
+            transform: translate3d(0, -10px, 0);
+          }
+          .conteudo.ativo:nth-child(1) {
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+          }
+          .conteudo.ativo:nth-child(2) {
+            display: none;
+          }
+          .conteudo.ativo:nth-child(3) {
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+        }
+        ul {
+          @include flexbox($vertical: none, $horizontal: none);
+          list-style: none;
+          position: relative;
+
+          p {
+            color: $primaria;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            @include contraste($contraste);
+            &::before {
+              content: "\25bc";
+              position: absolute;
+              right: -1.1em;
+            }
+          }
+          li {
+            margin-right: calc(2em + 16px);
+            position: relative;
+            @include tablet {
+              display: none;
+            }
+            a {
+              color: $primaria;
+              font-weight: 600;
+              text-decoration: none;
+              @include contraste($contraste);
+            }
+            .sub-menu.ativo {
+              display: block;
+              transition: 0.5s ease-in;
+            }
+            .sub-menu {
+              z-index: 100;
+              flex-direction: column;
+              background-color: $neutra;
+              position: absolute;
+              display: none;
+              top: 40px;
+              left: -40px;
+              border-radius: 2em;
+              box-shadow: 0px 13px 25px 8px rgba(0, 0, 0, 0.1);
+              transition: 0.5s ease-in;
+              &::before {
+                content: "▲";
+                font-size: 40px;
+                color: $neutra;
+                position: absolute;
+                top: -30px;
+                right: 50%;
+              }
+              li {
+                padding: 15px 40px;
+                a {
+                  text-transform: uppercase;
+                  font-weight: 600;
+                  text-decoration: none;
+                  @include contraste($contraste);
+                }
+              }
+            }
+          }
+          li:last-child {
+            margin-right: 0;
+          }
+        }
+
+        .conta {
+          @include tablet {
+            display: none;
+          }
+          a {
+            font-weight: $botoes;
+            font-size: 1.2em;
+            color: $primaria;
+            text-decoration: none;
+            &:first-child {
+              margin-right: 14px;
+              position: relative;
+              @include contraste($contraste);
+            }
+            &:last-child {
+              background-color: $primaria;
+              padding: 10px 20px;
+              color: $neutra;
+              border-radius: 2em;
+              &:hover {
+                background-color: $contraste;
+                transition: 0.2s ease-in-out;
+              }
+            }
+          }
+        }
+      }
+    }
+    #mobile.ativo {
+      display: flex;
+      transition: 0.3s ease-in;
+    }
+    #mobile {
+      display: none;
+      transition: 0.3s ease-in;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10000;
+      position: fixed;
+      bottom: 0;
+      background-color: #ffffff;
+      width: 100%;
+      height: 100vh;
+
+      a,
+      p {
+        text-transform: uppercase;
+        color: $primaria;
+        margin: 5px 0;
+        font-size: 18px;
+        font-weight: 600;
+        text-decoration: none;
+        @include contraste($contraste);
+        border-bottom: 1px solid $primaria;
+        cursor: pointer;
+      }
+      .lnk::after {
+        content: "\25bc";
+      }
+      .links.ativo {
+        display: flex;
+      }
+      .links {
+        display: none;
+        flex-direction: column;
+      }
+    }
+
+    header {
+      @include flexbox($horizontal: center);
+      flex-wrap: wrap-reverse;
+      @include padding($top: 50px, $bot: 100px);
+      grid-area: header;
+      .card {
+        width: 372px;
+        height: 450px;
+        background: #ffffff;
+        box-shadow: 0px 13px 25px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 30px;
+        z-index: 1;
+        @include mobile {
+          width: 80%;
+          min-width: 200px;
+          height: 450px;
+        }
+        .container {
+          height: 450px;
+          padding: 28px 42px;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          position: relative;
+          z-index: 1;
+          @include mobile {
+            padding: calc(28px * 2 / 3) calc(42px * 2 / 3);
+          }
+          .links {
+            a {
+              font-weight: $links;
+              font-size: 20px;
+              text-decoration: none;
+              color: $contraste;
+              position: relative;
+              @include mobile {
+                font-size: 16px;
+              }
+              &:first-child::after {
+                content: "|";
+                position: absolute;
+                right: -17px;
+                margin: 0px;
+                padding-left: 0px;
+              }
+              &:last-child {
+                margin-left: 20px;
+              }
+            }
+          }
+          .transferencia {
+            margin: 1em 0 0 0;
+            font-weight: $botoes;
+            font-size: 20px;
+            color: $neutra;
+            @include tablet {
+              font-size: 16px;
+            }
+            div {
+              display: flex;
+              margin: 1em 0 1em 0;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+              select {
+                @include tablet {
+                  font-size: 12px;
+                  padding: 5px;
+                }
+                @include mobile {
+                  padding: 0;
+                }
+                background: $primaria;
+                color: #ebebeb;
+                font-weight: $textos;
+                border-radius: 30px 0 0 30px;
+                border: none;
+                outline: 0;
+                max-width: 30%;
+
+                height: 50px;
+                font-size: 18px;
+                padding: 5px 10px;
+                border: 3px solid $primaria;
+              }
+              input[type="number"] {
+                @include tablet {
+                  font-size: 18px;
+                }
+                -moz-appearance: textfield;
+                appearance: textfield;
+                color: $primaria;
+                background: #ebebeb;
+                font-weight: $textos;
+                padding: 1rem;
+                border-radius: 0 30px 30px 0;
+                border: none;
+                outline: 0;
+                font-size: 22px;
+                width: 100%;
+                height: 50px;
+
+                &::-webkit-inner-spin-button {
+                  -webkit-appearance: none;
+                }
+              }
+            }
+          }
+        }
+        .cotacao {
+          margin: 40px 0 0 0;
+          font-size: 14px;
+          line-height: 25px;
+          div {
+            @include flexbox($horizontal: space-between);
+            font-weight: $botoes;
+            &:last-child {
+              margin: 20px 0 0 0;
+            }
+          }
+        }
+        input[type="submit"] {
+          @include tablet {
+            font-size: 16px;
+            height: 40px;
+          }
+          color: $neutra;
+          background: $degrade;
+          border-radius: 30px;
+          border: none;
+          height: 50px;
+          font-weight: $botoes;
+          font-size: 20px;
+          line-height: 33px;
+          text-transform: uppercase;
+          margin: 30px 0 0 0;
+          letter-spacing: 3px;
+          cursor: pointer;
+          &:hover {
+            background: $contraste;
+            transition: 1 ease-in-out;
+          }
+        }
+      }
+      .texto {
+        margin-left: 3em;
+        @include tablet {
+          margin-bottom: 30px;
+        }
+        h2 {
+          font-weight: $titulo;
+          font-size: 2em;
+          color: $t_titulo;
+          letter-spacing: 0.5rem;
+          line-height: 2.5em;
+        }
+        p {
+          color: $t_texto;
+          max-width: 420px;
+        }
+      }
+    }
+    .como {
+      grid-area: como;
+      @include padding($top: 50px, $bot: 50px);
+      @include mobile {
+        @include padding();
+      }
+      .titulo {
+        @include flexbox($vertical: none);
+        text-align: center;
+        h2 {
+          @include titulo(200px);
+          @include tablet {
+            @include titulo(150px);
+          }
+          @include mobile {
+            @include titulo(120px);
+          }
+        }
+      }
+      .cards {
+        margin: 50px 0 0 0;
+        position: relative;
+        @include mobile {
+          margin: 0 10%;
+        }
+
+        .primeira {
+          @include flexbox($vertical: center, $horizontal: space-between);
+          flex-wrap: wrap;
+          @include mobile {
+            position: absolute;
+            right: 0;
+            flex-direction: column;
+            @include flexbox($horizontal: space-between);
+            height: 500px;
+          }
+          div {
+            width: 150px;
+            height: 150px;
+            background: #0099ff;
+            box-shadow: 0px 3px 25px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            @include tablet {
+              max-width: 120px;
+              max-height: 120px;
+            }
+            .icone {
+              @include flexbox();
+              flex-direction: column;
+              i {
+                font-size: 60px;
+                color: $neutra;
+                @include tablet {
+                  font-size: 40px;
+                }
+              }
+              p {
+                max-width: 140px;
+                text-align: center;
+                margin-top: 5px;
+                font-size: 0.8rem;
+                font-weight: $textos;
+                color: $neutra;
+                letter-spacing: 1px;
+                @include tablet {
+                  letter-spacing: 0.5px;
+                  font-size: 0.7rem;
+                }
+              }
+            }
+          }
+          .setas {
+            position: block;
+            font-size: 4em;
+            color: $primaria;
+            @include tablet {
+              font-size: 2em;
+            }
+            @include mobile {
+              display: none;
+            }
+          }
+        }
+        .segunda {
+          @include flexbox($vertical: center, $horizontal: space-between);
+          display: relative;
+          margin-top: 100px;
+          flex-wrap: wrap;
+          @include mobile {
+            flex-direction: column;
+            @include flexbox($horizontal: space-between, $vertical: start);
+            height: 500px;
+          }
+          div {
+            width: 150px;
+            height: 150px;
+            background: #0099ff;
+            box-shadow: 0px 3px 25px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+
+            @include tablet {
+              max-width: 120px;
+              max-height: 120px;
+            }
+
+            .icone {
+              @include flexbox();
+              flex-direction: column;
+              i {
+                font-size: 60px;
+                color: $neutra;
+                @include tablet {
+                  font-size: 40px;
+                }
+              }
+              p {
+                max-width: 140px;
+                text-align: center;
+                margin-top: 5px;
+                font-size: 0.8rem;
+                font-weight: $textos;
+                color: $neutra;
+                letter-spacing: 1px;
+                @include tablet {
+                  letter-spacing: 0.5px;
+                  font-size: 0.7rem;
+                }
+              }
+            }
+          }
+          .setas {
+            position: block;
+            font-size: 4em;
+            color: $primaria;
+            @include tablet {
+              font-size: 2em;
+            }
+            @include mobile {
+              display: none;
+            }
+          }
+        }
+        .seta-baixo {
+          position: absolute;
+          margin: 20px 0 0 0;
+          right: 50px;
+          font-size: 4em;
+          color: $primaria;
+          @include tablet {
+            font-size: 2em;
+          }
+          @include mobile {
+            display: none;
+          }
+        }
+      }
+    }
+    .porque {
+      grid-area: por;
+      @include padding($top: 50px, $bot: 50px);
+      text-align: center;
+      .t {
+        @include flexbox($vertical: none);
+        h2 {
+          @include titulo(180px);
+          @include tablet {
+            @include titulo(130px);
+          }
+        }
+      }
+      .pq {
+        @include flexbox($horizontal: space-around);
+        flex-wrap: wrap;
+        margin: 40px 0 0 0;
+        .image {
+          max-width: 400px;
+          @include mobile {
+            max-width: 250px;
+          }
+        }
+        .texto {
+          max-width: 400px;
+
+          @include tablet {
+            margin: 50px 0 0 0;
+            max-width: 600px;
+          }
+          @include mobile {
+            max-width: 250px;
+          }
+          h3 {
+            font-weight: $titulo;
+            color: $contraste;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+            font-size: 32px;
+          }
+          p {
+            font-weight: $textos;
+            color: $t_texto;
+            font-size: 14px;
+            line-height: 24px;
+          }
+        }
+      }
+    }
+    .servicos {
+      grid-area: serv;
+      @include padding($top: 50px, $bot: 50px);
+      text-align: center;
+      .title {
+        @include flexbox();
+        h2 {
+          @include titulo(50px);
+          @include tablet {
+            @include titulo(20px);
+          }
+        }
+      }
+      .container {
+        @include flexbox($horizontal: space-between);
+        flex-wrap: wrap;
+        @include mobile {
+          @include flexbox($horizontal: center);
+        }
+        margin: 50px 0 0 0;
+        div {
+          @include mobile {
+            margin: 20px 0;
+          }
+          .img {
+            @include flexbox($vertical: none);
+            img {
+              max-width: 150px;
+            }
+          }
+          h3 {
+            text-align: center;
+            max-width: 200px;
+            font-weight: $titulo;
+            font-size: 26px;
+            color: $t_titulo;
+            line-height: 49px;
+            letter-spacing: 2px;
+          }
+          p {
+            text-align: center;
+            max-width: 200px;
+            color: $t_texto;
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+    footer {
+      grid-area: footer;
+      @include padding($top: 50px, $bot: 50px);
+      @include flexbox($horizontal: none, $vertical: center);
+      @include mobile {
+        margin: 0 5%;
+      }
+      .esquerda {
+        width: 50%;
+        h3 {
+          color: $primaria;
+          font-size: 24px;
+          font-weight: $botoes;
+        }
+        div {
+          margin-top: 10px;
+          color: $desativado;
+          font-size: 18px;
+          line-height: 25px;
+          p {
+            max-width: 360px;
+            padding: 0 20px 0 0;
+          }
+        }
+        .conjunto-icones {
+          @include flexbox($horizontal: space-between);
+          max-width: 230px;
+          .icone {
+            i {
+              font-size: 45px;
+              color: $primaria;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .links {
+        @include tablet {
+          position: absolute;
+          right: 10px;
+          display: block;
+        }
+        h5 {
+          font-size: 18px;
+          color: $primaria;
+          font-weight: $links;
+          letter-spacing: 1px;
+        }
+        div {
+          @include flexbox($vertical: start);
+
+          .fileira-um {
+            flex-direction: column;
+            a {
+              margin: 5px 0;
+              color: $desativado;
+              font-weight: $titulo;
+              text-decoration: none;
+              text-transform: capitalize;
+              position: relative;
+
+              &:hover {
+                color: $primaria;
+                text-decoration: underline;
+                transition: 0.3 ease-in-out;
+              }
+            }
+          }
+          .fileira-dois {
+            flex-direction: column;
+            a {
+              margin: 5px 0 0 40px;
+              color: $desativado;
+              font-weight: $titulo;
+              text-decoration: none;
+              text-transform: capitalize;
+              &:hover {
+                color: $primaria;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+    .direitos {
+      grid-area: dir;
+      @include padding($bot: 10px);
+      @include flexbox();
+      font-size: 14px;
+      letter-spacing: 0.03em;
+      color: $contraste;
+      font-weight: $titulo;
+      position: relative;
+    }
+  }
+}

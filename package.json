@@ -1,0 +1,35 @@
+{
+  "name": "remessaja",
+  "version": "1.0.0",
+  "description": "projeto front end para a empresa Remerssa Já",
+  "main": "/public/script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://planctor@github.com/marcoscarneiro2/RemessaJa.git"
+  },
+  "author": "Lucas Fernandes e Marcos Paulo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcoscarneiro2/RemessaJa/issues"
+  },
+  "homepage": "https://github.com/marcoscarneiro2/RemessaJa#readme",
+  "dependencies": {
+    "gulp-babel": "^8.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "babel-loader": "^8.2.3",
+    "eslint": "^7.32.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-cli": "^2.3.0",
+    "sass": "^1.42.1",
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1"
+  }
+}
